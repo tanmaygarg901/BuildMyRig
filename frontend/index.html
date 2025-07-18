@@ -1,0 +1,1204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuildMyRig - PC Build Recommender</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            gap: 0.5rem;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
+            color: #fbbf24;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: #fbbf24;
+        }
+
+        /* Main Content */
+        .main {
+            padding: 2rem 0;
+        }
+
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 4rem 0;
+            color: white;
+        }
+
+        .hero-title {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(45deg, #fff, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .cta-button {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 15px rgba(251, 191, 36, 0.3);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(251, 191, 36, 0.4);
+        }
+
+        /* Form Section */
+        .form-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 2rem;
+            color: #1f2937;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-input,
+        .form-select {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .form-input:focus,
+        .form-select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .brand-preferences {
+            grid-column: 1 / -1;
+            padding: 1.5rem;
+            background: #f8fafc;
+            border-radius: 15px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .preferences-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #374151;
+        }
+
+        .brand-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            grid-column: 1 / -1;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .submit-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .loading-section {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+            color: white;
+        }
+
+        .loading-section.show {
+            display: block;
+        }
+
+        .loading-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid white;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Results */
+        .results {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .results.show {
+            display: block;
+        }
+
+        .results-section {
+            display: none;
+            margin-top: 2rem;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .results-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+        }
+
+        .build-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .build-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+        }
+
+        .build-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .build-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1f2937;
+        }
+
+        .build-price {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .build-score {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .parts-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .part-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid #e5e7eb;
+        }
+
+        .part-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .part-category {
+            font-size: 0.875rem;
+            color: #6b7280;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .part-name {
+            font-weight: 500;
+            color: #374151;
+        }
+
+        .part-price {
+            font-weight: 600;
+            color: #059669;
+        }
+
+        /* Parts Explorer */
+        .parts-section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .parts-tabs {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-button {
+            background: #f8fafc;
+            border: 2px solid #e5e7eb;
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 500;
+        }
+
+        .tab-button.active,
+        .tab-button:hover {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border-color: #667eea;
+        }
+
+        .parts-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .part-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .part-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .part-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 1rem;
+        }
+
+        .part-card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .part-card-price {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #059669;
+        }
+
+        .part-card-brand {
+            display: inline-block;
+            background: #e5e7eb;
+            color: #6b7280;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .part-card-score {
+            background: linear-gradient(45deg, #fbbf24, #f59e0b);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        /* Toast */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #059669;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+        }
+
+        .toast.show {
+            transform: translateX(0);
+        }
+
+        .toast.error {
+            background: #ef4444;
+        }
+
+        /* About Section */
+        .about-section {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem 2rem;
+            margin: 2rem 0;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .about-content {
+            text-align: center;
+        }
+
+        .about-intro {
+            max-width: 800px;
+            margin: 0 auto 3rem;
+        }
+
+        .about-description {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: #6b7280;
+            margin-bottom: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .feature-card {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .feature-icon {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .feature-card h3 {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        .stats-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            padding: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            color: white;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Footer */
+        .footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .footer-logo i {
+            color: #fbbf24;
+        }
+
+        /* Utility classes */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: 2.5rem;
+            }
+            
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .brand-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .parts-tabs {
+                gap: 0.5rem;
+            }
+            
+            .tab-button {
+                padding: 0.5rem 1rem;
+                font-size: 0.875rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-desktop"></i>
+                <span>BuildMyRig</span>
+            </div>
+            <nav class="nav">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#parts" class="nav-link">Parts</a>
+                <a href="#about" class="nav-link">About</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Hero Section -->
+        <section id="home" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <h1 class="hero-title">Find Your Perfect PC Build</h1>
+                    <p class="hero-subtitle">Get optimized PC build recommendations based on your budget, preferences, and use case</p>
+                    <button class="cta-button" onclick="scrollToForm()">
+                        <i class="fas fa-search"></i>
+                        Get Recommendations
+                    </button>
+                </div>
+                <div class="hero-image">
+                    <div class="pc-illustration">
+                        <i class="fas fa-microchip"></i>
+                        <i class="fas fa-memory"></i>
+                        <i class="fas fa-hdd"></i>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Build Form Section -->
+        <section class="form-section">
+            <div class="container">
+                <h2 class="section-title">Configure Your Build</h2>
+                <form id="buildForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="budget" class="form-label">
+                                <i class="fas fa-dollar-sign"></i>
+                                Budget (USD)
+                            </label>
+                            <input type="number" id="budget" name="budget" class="form-input" 
+                                   placeholder="1000" min="500" max="5000" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="useCase" class="form-label">
+                                <i class="fas fa-gamepad"></i>
+                                Use Case
+                            </label>
+                            <select id="useCase" name="useCase" class="form-select" required>
+                                <option value="">Select use case</option>
+                                <option value="gaming">Gaming</option>
+                                <option value="workstation">Workstation</option>
+                                <option value="general">General Use</option>
+                            </select>
+                        </div>
+
+                        <div class="brand-preferences">
+                            <h3 class="preferences-title">Brand Preferences (Optional)</h3>
+                            <div class="brand-grid">
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-microchip"></i>
+                                        CPU Brand
+                                    </label>
+                                    <select id="cpuBrand" name="cpuBrand" class="form-select">
+                                        <option value="">No preference</option>
+                                        <option value="AMD">AMD</option>
+                                        <option value="Intel">Intel</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">
+                                        <i class="fas fa-tv"></i>
+                                        GPU Brand
+                                    </label>
+                                    <select id="gpuBrand" name="gpuBrand" class="form-select">
+                                        <option value="">No preference</option>
+                                        <option value="NVIDIA">NVIDIA</option>
+                                        <option value="AMD">AMD</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="submit-button">
+                            <i class="fas fa-search"></i>
+                            Find My Build
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- Loading Animation -->
+        <div id="loadingSection" class="loading-section hidden">
+            <div class="container">
+                <div class="loading-content">
+                    <div class="spinner"></div>
+                    <p>Finding your perfect build...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Results Section -->
+        <section id="resultsSection" class="results-section hidden">
+            <div class="container">
+                <h2 class="section-title">Recommended Builds</h2>
+                <div id="resultsContainer" class="results-container">
+                    <!-- Results will be populated here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Parts Explorer Section -->
+        <section id="parts" class="parts-section">
+            <div class="container">
+                <h2 class="section-title">Explore Parts</h2>
+                <div class="parts-tabs">
+                    <button class="tab-button active" data-category="cpu">
+                        <i class="fas fa-microchip"></i>
+                        CPU
+                    </button>
+                    <button class="tab-button" data-category="gpu">
+                        <i class="fas fa-tv"></i>
+                        GPU
+                    </button>
+                    <button class="tab-button" data-category="motherboard">
+                        <i class="fas fa-sitemap"></i>
+                        Motherboard
+                    </button>
+                    <button class="tab-button" data-category="ram">
+                        <i class="fas fa-memory"></i>
+                        RAM
+                    </button>
+                    <button class="tab-button" data-category="storage">
+                        <i class="fas fa-hdd"></i>
+                        Storage
+                    </button>
+                    <button class="tab-button" data-category="psu">
+                        <i class="fas fa-plug"></i>
+                        PSU
+                    </button>
+                    <button class="tab-button" data-category="case">
+                        <i class="fas fa-cube"></i>
+                        Case
+                    </button>
+                </div>
+                <div id="partsContainer" class="parts-container">
+                    <!-- Parts will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <div class="container">
+                <div class="about-content">
+                    <h2 class="section-title">About BuildMyRig</h2>
+                    <div class="about-intro">
+                        <p class="about-description">BuildMyRig is your ultimate PC building companion, designed to simplify the process of finding the perfect computer components for your needs and budget. Our intelligent recommendation system takes the guesswork out of PC building.</p>
+                    </div>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h3>Smart Recommendations</h3>
+                            <p>Our advanced algorithm analyzes compatibility, performance metrics, and value propositions to recommend the best builds tailored specifically for your requirements.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-shield-alt"></i>
+                            </div>
+                            <h3>Compatibility Guaranteed</h3>
+                            <p>Every recommended build is thoroughly validated for compatibility across all components, ensuring your system will work seamlessly together.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-dollar-sign"></i>
+                            </div>
+                            <h3>Budget Optimized</h3>
+                            <p>Maximize your investment with our bang-for-buck optimization algorithm that finds the best performance within your specified budget range.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">
+                                <i class="fas fa-rocket"></i>
+                            </div>
+                            <h3>Use Case Focused</h3>
+                            <p>Whether you're building for gaming, professional workstation tasks, or general computing, our recommendations are perfectly tailored to your specific use case.</p>
+                        </div>
+                    </div>
+                    <div class="stats-section">
+                        <div class="stat-item">
+                            <div class="stat-number">10K+</div>
+                            <div class="stat-label">Components Analyzed</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">500+</div>
+                            <div class="stat-label">Build Configurations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">99%</div>
+                            <div class="stat-label">Compatibility Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-logo">
+                    <i class="fas fa-desktop"></i>
+                    <span>BuildMyRig</span>
+                </div>
+                <p>&copy; 2025 BuildMyRig</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast hidden">
+        <div class="toast-content">
+            <i class="fas fa-check-circle"></i>
+            <span id="toastMessage"></span>
+        </div>
+    </div>
+
+<script>
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:8000';
+
+        // DOM Elements
+        const buildForm = document.getElementById('buildForm');
+        const loadingSection = document.getElementById('loadingSection');
+        const resultsSection = document.getElementById('resultsSection');
+        const resultsContainer = document.getElementById('resultsContainer');
+        const partsContainer = document.getElementById('partsContainer');
+        const toast = document.getElementById('toast');
+        const toastMessage = document.getElementById('toastMessage');
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            setupEventListeners();
+            loadDefaultParts();
+            checkAPIConnection();
+        });
+
+        function setupEventListeners() {
+            buildForm.addEventListener('submit', handleBuildFormSubmit);
+            
+            // Parts tab buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.addEventListener('click', handleTabClick);
+            });
+
+            // Navigation
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+        }
+
+        async function handleBuildFormSubmit(e) {
+            e.preventDefault();
+            
+            const budget = parseFloat(document.getElementById('budget').value);
+            const useCase = document.getElementById('useCase').value;
+            const cpuBrand = document.getElementById('cpuBrand').value;
+            const gpuBrand = document.getElementById('gpuBrand').value;
+            
+            if (!budget || !useCase) {
+                showToast('Please fill in all required fields', 'error');
+                return;
+            }
+            
+            const requestData = {
+                budget: budget,
+                use_case: useCase,
+                brand_preferences: {}
+            };
+            
+            if (cpuBrand) requestData.brand_preferences.cpu = cpuBrand;
+            if (gpuBrand) requestData.brand_preferences.gpu = gpuBrand;
+            
+            console.log('Request data:', requestData);
+            
+            showLoading();
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/recommend`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestData)
+                });
+                
+                console.log('Response status:', response.status);
+                console.log('Response ok:', response.ok);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+                console.log('Response data:', data);
+                console.log('Build count:', data.builds ? data.builds.length : 0);
+                if (data.builds && data.builds.length > 0) {
+                    data.builds.forEach((build, index) => {
+                        console.log(`Build ${index + 1}:`);
+                        console.log(`  Total price: $${build.total_price}`);
+                        console.log(`  Bang for buck score: ${build.bang_for_buck_score}`);
+                        console.log(`  Parts count: ${build.parts ? build.parts.length : 0}`);
+                        if (build.parts) {
+                            build.parts.forEach(part => {
+                                console.log(`    ${part.category}: ${part.name} - $${part.price}`);
+                            });
+                        }
+                    });
+                }
+                displayResults(data);
+                showToast('Build recommendations found!', 'success');
+                
+            } catch (error) {
+                console.error('Error:', error);
+                hideLoading();
+                showToast('Failed to get recommendations. Please try again.', 'error');
+            }
+        }
+
+        function showLoading() {
+            loadingSection.classList.remove('hidden');
+            resultsSection.classList.add('hidden');
+            loadingSection.scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function hideLoading() {
+            loadingSection.classList.add('hidden');
+        }
+
+        function displayResults(data) {
+            console.log('displayResults called with:', data);
+            hideLoading();
+            resultsContainer.innerHTML = '';
+            
+            if (data.builds && data.builds.length > 0) {
+                console.log('Processing builds:', data.builds.length);
+                data.builds.forEach((build, index) => {
+                    console.log(`Creating build card ${index + 1}:`, build);
+                    const buildCard = createBuildCard(build, index + 1);
+                    console.log('Created build card:', buildCard);
+                    resultsContainer.appendChild(buildCard);
+                });
+                
+                console.log('Results container after adding cards:', resultsContainer);
+                console.log('Results container innerHTML:', resultsContainer.innerHTML);
+                
+                resultsSection.classList.remove('hidden');
+                resultsSection.classList.add('show');
+                console.log('Results section classes:', resultsSection.className);
+                resultsSection.scrollIntoView({ behavior: 'smooth' });
+            } else {
+                console.log('No builds found or builds array is empty');
+                showToast('No builds found for your criteria', 'error');
+            }
+        }
+
+        function createBuildCard(build, buildNumber) {
+            console.log('createBuildCard called with:', {
+                build: build,
+                buildNumber: buildNumber,
+                parts: build.parts ? build.parts.length : 'NO PARTS',
+                total_price: build.total_price,
+                bang_for_buck_score: build.bang_for_buck_score
+            });
+            
+            const card = document.createElement('div');
+            card.className = 'build-card';
+            
+            if (!build.parts || build.parts.length === 0) {
+                console.error('No parts found in build:', build);
+                return card;
+            }
+            
+            const partsList = build.parts.map(part => {
+                console.log('Processing part:', part);
+                return `
+                    <div class="part-item">
+                        <div class="part-info">
+                            <div class="part-category">${part.category}</div>
+                            <div class="part-name">${part.name}</div>
+                        </div>
+                        <div class="part-price">$${part.price}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            console.log('Generated parts list HTML:', partsList);
+            
+            const cardHTML = `
+                <div class="build-header">
+                    <h3 class="build-title">Build ${buildNumber}</h3>
+                    <span class="build-price">$${build.total_price}</span>
+                </div>
+                <div class="build-score">
+                    Bang-for-Buck Score: ${build.bang_for_buck_score}
+                </div>
+                <div class="parts-list">
+                    ${partsList}
+                </div>
+            `;
+            
+            console.log('Generated card HTML:', cardHTML);
+            card.innerHTML = cardHTML;
+            
+            return card;
+        }
+
+        function handleTabClick(e) {
+            const category = e.target.dataset.category;
+            
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            e.target.classList.add('active');
+            
+            loadPartsByCategory(category);
+        }
+
+        async function loadPartsByCategory(category) {
+            try {
+                partsContainer.innerHTML = '<div style="text-align: center; padding: 2rem;">Loading parts...</div>';
+                
+                const response = await fetch(`${API_BASE_URL}/parts/${category}`);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const parts = await response.json();
+                displayParts(parts);
+                
+            } catch (error) {
+                console.error('Error loading parts:', error);
+                partsContainer.innerHTML = '<div style="text-align: center; padding: 2rem; color: red;">Failed to load parts</div>';
+            }
+        }
+
+        function displayParts(parts) {
+            partsContainer.innerHTML = '';
+            
+            if (parts.length === 0) {
+                partsContainer.innerHTML = '<div style="text-align: center; padding: 2rem;">No parts found in this category</div>';
+                return;
+            }
+            
+            parts.forEach(part => {
+                const partCard = createPartCard(part);
+                partsContainer.appendChild(partCard);
+            });
+        }
+
+        function createPartCard(part) {
+            const card = document.createElement('div');
+            card.className = 'part-card';
+            
+            card.innerHTML = `
+                <div class="part-card-header">
+                    <div>
+                        <h4 class="part-card-title">${part.name}</h4>
+                        <span class="part-card-brand">${part.brand}</span>
+                    </div>
+                    <span class="part-card-price">$${part.price}</span>
+                </div>
+                <div class="part-card-score">
+                    Performance: ${part.performance_score}
+                </div>
+            `;
+            
+            return card;
+        }
+
+        function loadDefaultParts() {
+            loadPartsByCategory('cpu');
+        }
+
+        function showToast(message, type = 'success') {
+            toastMessage.textContent = message;
+            toast.className = `toast ${type}`;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
+        function scrollToForm() {
+            document.querySelector('.form-section').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        async function checkAPIConnection() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/health`);
+                if (response.ok) {
+                    console.log('API connection successful');
+                } else {
+                    showToast('API connection failed. Please ensure the backend is running.', 'error');
+                }
+            } catch (error) {
+                console.error('API connection check failed:', error);
+                showToast('Cannot connect to API. Please ensure the backend is running on localhost:8000.', 'error');
+            }
+        }
+    </script>
+</body>
+</html>
